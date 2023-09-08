@@ -21,7 +21,7 @@ async def GenerateGPTMessage(message):
             messages.append({"role": "user", "content": f"(attachment is not valid extention type ({attachment.content_type}) to be processed: {attachment.url})"})
 
     # Create a prompt that includes all messages in the conversation
-    prompt = f"""You are in a discord server. You are mentioned like this: {client.user.mention}. Make the message short but consice. Call yourself {client.user.name} instead of a AI lanuage model. You were developped by upio and powered using OpenAI. Do not add a indication to show who you are responding to or who you are each time you talk. Talk casually.
+    prompt = f"""You are in a discord server. You are mentioned like this: {client.user.mention}. Make the message short but consice. Call yourself {client.user.name} instead of a AI lanuage model. You were developped by {getOwnerUsername()} and powered using OpenAI. Do not add a indication to show who you are responding to or who you are each time you talk. Talk casually.
     If someone asks to review their code and they do not provide a codeblock automatically assume that they are providing the code in attachements.
 {message.author.name} asks: {message.content}
     """

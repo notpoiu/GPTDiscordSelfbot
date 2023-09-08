@@ -3,3 +3,6 @@ def getToken():
 
 def getOpenAIKey():
   return "sk-input-your-api-key-here"
+
+def getOwnerUsername():
+  return "upio"

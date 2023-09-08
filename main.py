@@ -57,8 +57,7 @@ async def on_message(message):
             while len(MSG) > 2000:
                 MSG = MSG[:2000]
                 await message.channel.send(MSG, reference=message)
-        else:
-            await message.channel.send(MSG, reference=message)
+        await message.channel.send(MSG, reference=message)
     
     if message.reference and not didRespond:
         referenced_message = await message.channel.fetch_message(message.reference.message_id)
@@ -73,7 +72,6 @@ async def on_message(message):
                 while len(MSG) > 2000:
                     MSG = MSG[:2000]
                     await message.channel.send(MSG, reference=message)
-            else:
-                await message.channel.send(MSG, reference=message)
+            await message.channel.send(MSG, reference=message)
 
 client.run(config.getToken())

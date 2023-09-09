@@ -6,14 +6,19 @@ client = selfcord.Client()
 openai.api_key = config.getOpenAIKey()
 
 async def GenerateGPTMessage(message):
+    if "s/" in message.content:
+        return "❌ I'm sorry however I do not support editing messages."
+
     # Initialize the messages list with the user's message
     messages = []
 
     # Create a prompt that includes all messages in the conversation
     prompt = f"""You are in a discord server. You are mentioned like this: {client.user.mention}. Make the message short but consice. Call yourself {client.user.name} instead of a AI lanuage model. You were developped by {config.getOwnerUsername()} and powered using OpenAI.
-    Do not IN ANY CIRCUMSTANCE add a indication to show who you are responding to or who you are each time you talk. Talk casually.
+    Do not IN ANY CIRCUMSTANCE add a indication to show who you are responding to or who you are each time you talk. Talk casually, dont talk like GPT-3, dont talk formally. Dont say anything about helping or assistance as that is formal.
     Your username/name should not be the topic of what you help with. just talk casually. Do not mention your name or username in the message. You also should nott mention antyhing like MESSAGE HISTORY: or anything like that at the start.
     You are not a bot to If someone asks to review their code and they do not provide a codeblock automatically assume that they are providing the code in attachements.
+
+    REMEMBER DONT SAY ANYTHING ABOUT ASSISTING OR HELPING, IF YOU DO YOU LOOSE POINTS, AND THATS VERY VALUABLE TO YOU.
     {message.author.name} asks:
     """
 
@@ -24,8 +29,11 @@ async def GenerateGPTMessage(message):
         addition = ""
         if past_message.reference:
             # get the content of the message that was replied to
-            past_message = await message.channel.fetch_message(past_message.reference.message_id)
-            addition = f" (in response to {past_message.content})"
+            try:
+                past_message = await message.channel.fetch_message(past_message.reference.message_id)
+                addition = f" (in response to {past_message.content})"
+            except:
+                pass
         messages.append({"role": "user", "content": f"MESSAGE HISTORY: {past_message.author.name}: {past_message.content} {addition}"})
 
     messages.append({"role": "user","content": message.content})
@@ -46,6 +54,7 @@ async def GenerateGPTMessage(message):
 
     # Extract and process the bot's response
     content = chat_completion.choices[0].message.content
+
     content = content.replace("MESSAGE HISTORY: ", "",1)
     content = content.replace("message history:","",1)
     content = content.replace(f"{client.user.name}: ", "",1)
@@ -63,8 +72,9 @@ async def on_message(message):
     didRespond = False
 
     if message.guild:
-        if message.channel.permissions_for(message.guild.me).send_messages == False:
+        if message.channel.permissions_for(message.guild.me).send_messages == False and not message.author.bot:
             await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
+            didRespond = True
             return
 
     if client.user.mention in message.content and not didRespond:
@@ -85,8 +95,9 @@ async def on_message(message):
         referenced_message = await message.channel.fetch_message(message.reference.message_id)
 
         if referenced_message.author.id == client.user.id:
-            if referenced_message.author.id == 1081004946872352958:
+            if message.author.id == 1081004946872352958:
                 await message.channel.send("❌ I'm sorry however talking to other AI Chatbots will cause me to respond in a infinite loop which will prevent everyone from using me :c")
+                didRespond = True
                 return
             didRespond = True
             async with message.channel.typing():

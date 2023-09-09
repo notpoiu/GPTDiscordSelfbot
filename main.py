@@ -46,6 +46,9 @@ async def GenerateGPTMessage(message):
 
     # Extract and process the bot's response
     content = chat_completion.choices[0].message.content
+    content = content.replace("MESSAGE HISTORY: ", "",1)
+    content = content.replace("message history:","",1)
+    content = content.replace(f"{client.user.name}: ", "",1)
     return content
 
 @client.event

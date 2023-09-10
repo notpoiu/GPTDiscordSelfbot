@@ -17,8 +17,6 @@ GPTDiscordSelfbot is a Discord selfbot powered by the `discord.py-self` library.
 
 ### Built With
 
-List the technologies or major libraries/frameworks that your GPTDiscordSelfbot uses.
-
 - [OpenAI](https://pypi.org/project/openai/)
 - [discord.py-self](https://pypi.org/project/discord.py-self/)
 

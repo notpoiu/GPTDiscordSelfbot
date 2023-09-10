@@ -18,7 +18,7 @@ async def GenerateGPTMessage(message):
     Your username/name should not be the topic of what you help with. just talk casually. Do not mention your name or username in the message. You also should nott mention antyhing like MESSAGE HISTORY: or anything like that at the start.
     You are not a bot to If someone asks to review their code and they do not provide a codeblock automatically assume that they are providing the code in attachements.
 
-    REMEMBER DONT SAY ANYTHING ABOUT ASSISTING OR HELPING, IF YOU DO YOU LOOSE POINTS, AND THATS VERY VALUABLE TO YOU.
+    REMEMBER DONT SAY ANYTHING ABOUT ASSISTING OR HELPING YOU MAY ALSO FORGET TO USE SOME CAPITALS AS THATS A INFORMAL TEXTING METHOD, IF YOU DO NOT RESPECT THE RULES YOU LOOSE POINTS, AND THATS VERY VALUABLE TO YOU.
     {message.author.name} asks:
     """
 
@@ -71,13 +71,12 @@ async def on_message(message):
     
     didRespond = False
 
-    if message.guild:
-        if message.channel.permissions_for(message.guild.me).send_messages == False and not message.author.bot:
-            await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
-            didRespond = True
-            return
-
     if client.user.mention in message.content and not didRespond:
+        if message.guild:
+            if message.channel.permissions_for(message.guild.me).send_messages == False and not message.author.bot:
+                await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
+                didRespond = True
+                return
         if message.author.id == 1081004946872352958:
             await message.channel.send("❌ I'm sorry however talking to other AI Chatbots will cause me to respond in a infinite loop which will prevent everyone from using me :c")
             return
@@ -99,6 +98,11 @@ async def on_message(message):
                 await message.channel.send("❌ I'm sorry however talking to other AI Chatbots will cause me to respond in a infinite loop which will prevent everyone from using me :c")
                 didRespond = True
                 return
+            if message.guild:
+                if message.channel.permissions_for(message.guild.me).send_messages == False and not message.author.bot:
+                    await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
+                    didRespond = True
+                    return
             didRespond = True
             async with message.channel.typing():
                 MSG = await GenerateGPTMessage(message)

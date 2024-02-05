@@ -1,8 +1,16 @@
-def getToken():
-  return "Discord-Selfbot-Token"
+options = {
+  "model_settings": {
+      "model": "gpt-3.5-turbo",
+      "chat_history_limit": 5,
+      "save_conversations": False,
 
-def getOpenAIKey():
-  return "sk-input-your-api-key-here"
+      "billing": {
+          "is_free": False, # NOT RECOMMENDED, CAN NOT WORK AT TIMES
+          "openai_key": "sk-put-your-key-here"
+      }
+  },
+  
 
-def getOwnerUsername():
-  return "upio"
+  "owner_username": "upio",
+  "discord_token": "discord-token-here",
+}

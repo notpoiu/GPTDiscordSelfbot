@@ -19,6 +19,7 @@ GPTDiscordSelfbot is a Discord selfbot powered by the `discord.py-self` library.
 
 - [OpenAI](https://pypi.org/project/openai/)
 - [discord.py-self](https://pypi.org/project/discord.py-self/)
+- [g4f (gpt4free)](https://github.com/xtekky/gpt4free)
 
 ## Getting Started
 

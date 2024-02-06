@@ -1,5 +1,5 @@
 # GPTDiscordSelfbot
-Discord selfbot with GPT responses, using discord.py-self & OpenAI.
+Discord selfbot with GPT responses, using discord.py-self & OpenAI & gpt4free.
 ## Table of Contents
 
 - [About the Project](#about-the-project)
@@ -13,7 +13,7 @@ Discord selfbot with GPT responses, using discord.py-self & OpenAI.
 
 ## About the Project
 
-GPTDiscordSelfbot is a Discord selfbot powered by the `discord.py-self` library. It responds with GPT-generated responses when pinged, replied to, or messaged directly. The bot is built using the OpenAI Python library for GPT interactions and relies on the `discord.py-self` library for Discord integration.
+GPTDiscordSelfbot is a Discord selfbot powered by the `discord.py-self` library. It responds with GPT-generated responses when pinged, replied to, or messaged directly. The bot is built using the OpenAI Python library for GPT interactions and relies on the `discord.py-self` library for Discord integration. This bot has also `gpt4free` which is a python library that reverse engeniers sites in order to get their chatbot responses.
 
 ### Built With
 

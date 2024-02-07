@@ -124,7 +124,7 @@ async def handle_reply(message, did_respond):
                 await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
                 return
             
-            await send_message_typing()
+            await send_message_typing(message)
             await save_conversations(message)
 
 async def handle_direct_messages(message):

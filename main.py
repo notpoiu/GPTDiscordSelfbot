@@ -6,8 +6,8 @@ openai.api_key = options["model_settings"]["billing"]["openai_key"]
 
 # Functions
 def sanitize_message(message, author_name):
-    new_message = message.replace(client.user.name+": ", "").strip()
-    new_message = new_message.replace(author_name+": ", "").strip()
+    new_message = message.strip(f"{client.user.name}: ")
+    new_message = new_message.strip(f"{author_name}: ")
 
     return new_message
 

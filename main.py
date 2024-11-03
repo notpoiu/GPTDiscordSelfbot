@@ -1,8 +1,12 @@
-import selfcord, openai, g4f, json, os
+import selfcord, g4f, json, os
+from openai import OpenAI
 from config import options
 
 client = selfcord.Client()
-openai.api_key = options["model_settings"]["billing"]["openai_key"]
+
+openai = OpenAI(
+  api_key = options["model_settings"]["billing"]["openai_key"],  # this is also the default, it can be omitted
+)
 
 # Functions
 def sanitize_message(message, author_name):
@@ -36,7 +40,7 @@ REMEMBER DONT SAY ANYTHING ABOUT ASSISTING OR HELPING YOU MAY ALSO FORGET TO USE
                 addition = f" (in response to {past_message.content})"
         except:
             pass
-            
+
         messages.append({"role": "user", "content": f"{past_message.author.name}: {past_message.content} {addition}"})
 
     messages.append({"role": "user","content": message.content})
@@ -60,7 +64,7 @@ REMEMBER DONT SAY ANYTHING ABOUT ASSISTING OR HELPING YOU MAY ALSO FORGET TO USE
         chat_completion = await g4f.ChatCompletion.create_async(model=options["model_settings"]["model"], messages=messages)
         return sanitize_message(chat_completion, message.author.name)
     else:
-        chat_completion = openai.ChatCompletion.create(model=options["model_settings"]["model"], messages=messages)
+        chat_completion = openai.chat.completions.create(model=options["model_settings"]["model"], messages=messages)
         return sanitize_message(chat_completion.choices[0].message.content, message.author.name)
 
 async def send_message_typing(message):
@@ -84,13 +88,13 @@ async def fetch_data_from_convo(message):
     with open(f"conversations/{message.channel.id}.json", "r") as file:
         data = json.load(file)
         file.close()
-    
+
     return data
 
 async def save_conversations(message):
     if not os.path.exists("conversations"):
         os.makedirs("conversations")
-    
+
     data = await fetch_data_from_convo(message)
 
     data[message.id] = {
@@ -110,7 +114,7 @@ async def handle_pings(message):
     if message.guild and not message.channel.permissions_for(message.guild.me).send_messages and not message.author.bot:
         await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
         return False
-    
+
     await send_message_typing(message)
     await save_conversations(message)
     return True
@@ -123,7 +127,7 @@ async def handle_reply(message, did_respond):
             if message.guild and message.channel.permissions_for(message.guild.me).send_messages == False and not message.author.bot:
                 await message.author.send(f"❌ I'm sorry however I do not have permission to send messages in that channel (<#{message.channel.id}>).\nPlease contact a server administrator to fix this issue.")
                 return
-            
+
             await send_message_typing(message)
             await save_conversations(message)
 
